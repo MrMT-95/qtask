@@ -25,7 +25,15 @@ public class User {
     @OneToMany
     private List<Task> tasks;
 
+    public User(String name) {
+    }
+
+    public User() {
+        
+    }
+
     //constructors
+
 
 
     //getters and setters
@@ -50,6 +58,14 @@ public class User {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public List<Task> getTasks() {
+        return tasks;
+    }
+
+    public void setTasks(List<Task> tasks) {
+        this.tasks = tasks;
     }
 }
 

@@ -17,6 +17,8 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     compile 'org.springframework.boot:spring-boot-starter-data-jpa:2.4.1'
     compile 'com.h2database:h2:1.4.200'
+    compile 'org.springframework.boot:spring-boot-starter-actuator:2.4.1'
+    compile 'org.springframework.boot:spring-boot-devtools:2.4.1'
 }
 
 test {
