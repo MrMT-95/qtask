@@ -19,16 +19,17 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public void addUser(UserRequest userRequest) {
-        String name = userRequest.getName();
+        String login = userRequest.getLogin();
+
 
         //check if provided name exist
-        Optional<User> userOptional = userRepository.findUserByName(name);
+        Optional<User> userOptional = userRepository.findUserByLogin(login);
         userOptional.ifPresent(user -> {
             throw new ResponseStatusException(HttpStatus.CONFLICT,"Given user already exists!");
         });
 
         //create user
-        User user = new User(name);
+        User user = new User(login);
         userRepository.save(user);
         throw new ResponseStatusException(HttpStatus.OK,"User added successfully");
     }

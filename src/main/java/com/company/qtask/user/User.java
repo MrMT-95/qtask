@@ -17,7 +17,7 @@ public class User {
     private Integer id;
 
     @JsonProperty("name")
-    private String name;
+    private String login;
 
     private String firstName;
     private String password;
@@ -30,10 +30,15 @@ public class User {
 
     //constructors
 
-
-    public User(String name) {
-        this.name = name;
+    public User(String login, String password) {
+        this.login = login;
+        this.password = password;
     }
+
+    public User(String login) {
+        this.login = login;
+    }
+
 
     public User() {
 
@@ -47,12 +52,12 @@ public class User {
         return id;
     }
 
-    public String getName() {
-        return name;
+    public String getLogin() {
+        return login;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setLogin(String login) {
+        this.login = login;
     }
 
     public Role getRole() {
