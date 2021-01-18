@@ -13,11 +13,14 @@ public class User {
 
     //attributes
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @JsonProperty("name")
     private String name;
+
+    private String firstName;
+    private String password;
 
     @ManyToOne
     private Role role;
@@ -25,16 +28,16 @@ public class User {
     @OneToMany
     private List<Task> tasks;
 
-    public User(String name) {
-    }
-
-    public User() {
-        
-    }
-
     //constructors
 
 
+    public User(String name) {
+        this.name = name;
+    }
+
+    public User() {
+
+    }
 
     //getters and setters
     public void setId(Integer id) {
@@ -66,6 +69,22 @@ public class User {
 
     public void setTasks(List<Task> tasks) {
         this.tasks = tasks;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
 

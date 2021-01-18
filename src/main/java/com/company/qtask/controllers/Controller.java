@@ -1,8 +1,10 @@
 package com.company.qtask.controllers;
 
+import com.company.qtask.user.User;
 import com.company.qtask.user.UserRequest;
 import com.company.qtask.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,9 +19,13 @@ public class Controller {
         this.userService = userService;
     }
 
+
     @PostMapping(value = "/users", consumes = "application/json")
-    public String addUser(@RequestBody UserRequest userRequest){
+    public void addUser(@RequestBody UserRequest userRequest){
         userService.addUser(userRequest);
-        return "User added!";
+    }
+    @GetMapping("/users")
+    public Iterable<User> getUsers(){
+        return userService.getUsers();
     }
 }
