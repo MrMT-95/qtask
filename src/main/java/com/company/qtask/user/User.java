@@ -4,6 +4,7 @@ package com.company.qtask.user;
 import com.company.qtask.role.Role;
 import com.company.qtask.task.Task;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.sun.istack.NotNull;
 
 import javax.persistence.*;
 import java.util.List;
@@ -16,11 +17,11 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @JsonProperty("name")
+    @JsonProperty("login")
     private String login;
-
     private String firstName;
     private String password;
+    private String status; // active or not active
 
     @ManyToOne
     private Role role;
@@ -30,15 +31,13 @@ public class User {
 
     //constructors
 
-    public User(String login, String password) {
+
+    public User(String login, String firstName, String password, Role role) {
         this.login = login;
+        this.firstName = firstName;
         this.password = password;
+        this.role = role;
     }
-
-    public User(String login) {
-        this.login = login;
-    }
-
 
     public User() {
 
@@ -48,6 +47,7 @@ public class User {
     public void setId(Integer id) {
         this.id = id;
     }
+
     public Integer getId() {
         return id;
     }
@@ -90,6 +90,14 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }
 

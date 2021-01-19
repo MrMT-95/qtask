@@ -6,6 +6,7 @@ import java.util.Optional;
 
 public interface UserRepository extends CrudRepository<User, Integer> {
 
-    User findUserById (Integer id);
-    Optional<User> findUserByLogin (String login);
+    User findUserById(Integer id);
+
+    Optional<User> findUserByLogin(String login);
 }
