@@ -28,17 +28,18 @@ public class UserServiceImpl implements UserService{
         String password = userRequest.getPassword();
         Role role = userRequest.getRole();
 
-
-        //check if role is provided if not user should be set here
-        if (role == null){
-            role = roleRepository.findRoleByName("name");
-        }
-
         //check if provided name exist
         Optional<User> userOptional = userRepository.findUserByLogin(login);
         userOptional.ifPresent(user -> {
             throw new ResponseStatusException(HttpStatus.CONFLICT,"Given user already exists!");
         });
+
+        //check if role is provided if not, user(role) should be set here
+        Optional<Role> roleOptional = Optional.ofNullable(role);
+        if(roleOptional.isEmpty()){
+            role = roleRepository.findRoleByName("user");
+        }
+
 
         //create user
         User user = new User(login,firstName,password,role);
