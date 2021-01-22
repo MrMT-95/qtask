@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService{
@@ -42,14 +43,18 @@ public class UserServiceImpl implements UserService{
 
 
         //create user
-        User user = new User(login,firstName,password,role);
+        User user = new User(login,firstName,password, userRequest.getStatus(), role);
         userRepository.save(user);
         throw new ResponseStatusException(HttpStatus.OK,"User added successfully");
     }
 
     @Override
-    public Iterable<User> getUsers() {
-        return userRepository.findAll();
+    public Iterable<UserResponse> getUsers() {
+
+        return userRepository.findAll().stream()
+                .map(User::toUserResponse)
+                .collect(Collectors.toList());
+
     }
 
     @Override

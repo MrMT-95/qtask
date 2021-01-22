@@ -2,6 +2,7 @@ package com.company.qtask.user;
 
 import com.company.qtask.role.Role;
 import com.company.qtask.task.Task;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.util.List;
 
@@ -10,6 +11,7 @@ public class UserRequest {
     String login;
     String firstName;
     String password;
+    String status = "active";
     Role role;
     List<Task> tasks;
 
@@ -35,6 +37,14 @@ public class UserRequest {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public Role getRole() {

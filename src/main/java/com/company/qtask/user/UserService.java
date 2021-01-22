@@ -4,7 +4,7 @@ public interface UserService {
 
     void addUser(UserRequest userRequest);
 
-    Iterable<User> getUsers();
+    Iterable<UserResponse> getUsers();
 
     void deleteUser();
 }

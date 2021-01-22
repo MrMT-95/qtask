@@ -1,40 +1,27 @@
 package com.company.qtask.role;
 
 import com.company.qtask.user.User;
+import com.fasterxml.jackson.annotation.JacksonInject;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-import javax.persistence.*;
 import java.util.List;
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class RoleResponse {
 
-@Entity
-public class Role {
+    int id;
+    String name;
+    List<User> users;
 
-    //attributes
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
-    private String name;
-
-    @OneToMany
-    private List<User> users;
-
-    //constructors
-
-    public Role(String name) {
+    public RoleResponse(String name) {
         this.name = name;
     }
 
-    public Role() {
-
-    }
-
-
-    //getters and setters
-
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 

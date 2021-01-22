@@ -1,8 +1,10 @@
 package com.company.qtask.controllers;
 
 import com.company.qtask.role.RoleRequest;
+import com.company.qtask.role.RoleService;
 import com.company.qtask.user.User;
 import com.company.qtask.user.UserRequest;
+import com.company.qtask.user.UserResponse;
 import com.company.qtask.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,11 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class Controller {
 
     UserService userService;
-
+    RoleService roleService;
 
     @Autowired
-    public Controller(UserService userService) {
+    public Controller(UserService userService, RoleService roleService) {
         this.userService = userService;
+        this.roleService = roleService;
     }
 
 
@@ -26,13 +29,14 @@ public class Controller {
     public void addUser(@RequestBody UserRequest userRequest){
         userService.addUser(userRequest);
     }
+
     @GetMapping("/users")
-    public Iterable<User> getUsers(){
+    public Iterable<UserResponse> getUsers(){
         return userService.getUsers();
     }
 
     @PostMapping("/roles")
     public void addRole(RoleRequest roleRequest){
-
+        roleService.addRole(roleRequest);
     }
 }
