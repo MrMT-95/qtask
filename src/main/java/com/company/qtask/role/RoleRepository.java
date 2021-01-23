@@ -10,4 +10,6 @@ public interface RoleRepository extends CrudRepository<Role, Integer> {
 
     Role findRoleByName(String name);
 
+    Iterable<Role> findAll();
+
 }

@@ -19,4 +19,10 @@ public class RoleServiceImpl implements RoleService{
         roleRepository.save(role);
         throw new ResponseStatusException(HttpStatus.OK,"Role added successfully");
     }
+
+    @Override
+    public Iterable<Role> getRoles() {
+
+        return roleRepository.findAll();
+    }
 }

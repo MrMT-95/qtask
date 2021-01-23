@@ -1,12 +1,10 @@
 package com.company.qtask.role;
 
 import com.company.qtask.user.User;
-import com.fasterxml.jackson.annotation.JacksonInject;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
-@JsonInclude(JsonInclude.Include.NON_NULL)
+
+@JsonInclude(JsonInclude.Include.NON_DEFAULT)
 public class RoleResponse {
 
     int id;

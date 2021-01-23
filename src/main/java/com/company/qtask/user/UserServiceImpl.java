@@ -2,6 +2,7 @@ package com.company.qtask.user;
 
 import com.company.qtask.role.Role;
 import com.company.qtask.role.RoleRepository;
+import com.company.qtask.role.RoleRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -39,6 +40,8 @@ public class UserServiceImpl implements UserService{
         Optional<Role> roleOptional = Optional.ofNullable(role);
         if(roleOptional.isEmpty()){
             role = roleRepository.findRoleByName("user");
+        }else{
+            role = roleRepository.findRoleByName(userRequest.getRole().getName());
         }
 
 

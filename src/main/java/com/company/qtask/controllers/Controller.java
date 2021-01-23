@@ -1,5 +1,6 @@
 package com.company.qtask.controllers;
 
+import com.company.qtask.role.Role;
 import com.company.qtask.role.RoleRequest;
 import com.company.qtask.role.RoleService;
 import com.company.qtask.user.User;
@@ -38,5 +39,10 @@ public class Controller {
     @PostMapping("/roles")
     public void addRole(RoleRequest roleRequest){
         roleService.addRole(roleRequest);
+    }
+
+    @GetMapping("/roles")
+    public Iterable<Role> getRoles(){
+        return roleService.getRoles();
     }
 }

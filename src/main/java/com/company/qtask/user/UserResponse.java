@@ -2,8 +2,10 @@ package com.company.qtask.user;
 
 import com.company.qtask.role.RoleResponse;
 import com.company.qtask.task.Task;
-
+import com.fasterxml.jackson.annotation.JsonInclude;
 import java.util.List;
+
+@JsonInclude(JsonInclude.Include.NON_DEFAULT)
 
 public class UserResponse {
 
