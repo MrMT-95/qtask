@@ -2,18 +2,20 @@ package com.company.qtask.user;
 
 import com.company.qtask.role.RoleResponse;
 import com.company.qtask.task.Task;
-import com.fasterxml.jackson.annotation.JsonInclude;
+
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
-@JsonInclude(JsonInclude.Include.NON_DEFAULT)
-
+//@JsonInclude(JsonInclude.Include.NON_DEFAULT)
 public class UserResponse {
 
     //attributes
     private Integer id;
+    @NotNull
+    @Min(value = 3)
     private String login;
     private String firstName;
-    private String password;
     private String status; // active or not active
     private RoleResponse role;
     private List<Task> tasks;
@@ -63,14 +65,6 @@ public class UserResponse {
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getStatus() {

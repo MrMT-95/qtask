@@ -3,16 +3,9 @@ package com.company.qtask.user;
 import com.company.qtask.role.Role;
 import com.company.qtask.role.RoleResponse;
 import com.company.qtask.task.Task;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.sun.istack.NotNull;
-import net.bytebuddy.implementation.bind.annotation.Default;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.Optional;
 
 @Entity
 public class User {
@@ -21,8 +14,6 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
-    @JsonProperty("login")
     private String login;
     private String firstName;
     private String password;

@@ -2,15 +2,24 @@ package com.company.qtask.user;
 
 import com.company.qtask.role.Role;
 import com.company.qtask.task.Task;
-import org.springframework.beans.factory.annotation.Value;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 public class UserRequest {
 
+    @NotNull
+    @Size(min = 3,max=20)
     String login;
+
     String firstName;
+
+    @NotNull
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,10}$")
     String password;
+
     String status = "active";
     Role role;
     List<Task> tasks;

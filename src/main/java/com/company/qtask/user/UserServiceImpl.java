@@ -2,7 +2,6 @@ package com.company.qtask.user;
 
 import com.company.qtask.role.Role;
 import com.company.qtask.role.RoleRepository;
-import com.company.qtask.role.RoleRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -10,6 +9,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 import java.util.stream.Collectors;
+
 
 @Service
 public class UserServiceImpl implements UserService{
@@ -23,6 +23,7 @@ public class UserServiceImpl implements UserService{
         this.roleRepository = roleRepository;
     }
 
+
     @Override
     public void addUser(UserRequest userRequest) {
         String login = userRequest.getLogin();
@@ -32,16 +33,23 @@ public class UserServiceImpl implements UserService{
 
         //check if provided name exist
         Optional<User> userOptional = userRepository.findUserByLogin(login);
+//        userOptional.orElseThrow(()->{
+//            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Login should not be blank");
+//        });
         userOptional.ifPresent(user -> {
             throw new ResponseStatusException(HttpStatus.CONFLICT,"Given user already exists!");
         });
 
         //check if role is provided if not, user(role) should be set here
-        Optional<Role> roleOptional = Optional.ofNullable(role);
-        if(roleOptional.isEmpty()){
-            role = roleRepository.findRoleByName("user");
+        if(Optional.ofNullable(role).isEmpty()){
+            role = roleRepository.findRoleByName("user").orElseThrow(()->{
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Role \"User\" does not exist!");
+            });
         }else{
-            role = roleRepository.findRoleByName(userRequest.getRole().getName());
+            Optional<Role> roleOptional = roleRepository.findRoleByName(role.getName());
+            role = roleOptional.orElseThrow(()->{
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Given role does not exist!");
+            });
         }
 
 
