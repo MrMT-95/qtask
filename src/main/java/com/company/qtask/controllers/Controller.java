@@ -9,6 +9,7 @@ import com.company.qtask.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 public class Controller {
@@ -33,10 +35,30 @@ public class Controller {
     @PostMapping(value = "/users", consumes = "application/json")
     public void addUser(@Valid @RequestBody UserRequest userRequest,
     BindingResult result){
+
+
+//        if (result.hasErrors()){
+//            StringBuilder stringBuilder = new StringBuilder("error : ");
+//            List<ObjectError> errorList = result.getAllErrors();
+//            errorList.forEach(objectError -> {
+//                stringBuilder.append(System.lineSeparator()).append(objectError.getDefaultMessage());
+//            });
+//            throw new ResponseStatusException(HttpStatus.CONFLICT,stringBuilder.toString());
+//        }else {
+//            userService.addUser(userRequest);
+//        }
+
+    }
+
+    @PostMapping(value = "/user/register", consumes = "application/json")
+    public void registerUser(@Valid @RequestBody UserRequest userRequest, BindingResult result){
         if (result.hasErrors()){
-            throw new ResponseStatusException(HttpStatus.CONFLICT);
+            StringBuilder stringBuilder = new StringBuilder("error : ");
+            List<ObjectError> errorList = result.getAllErrors();
+            errorList.forEach(objectError -> stringBuilder.append(System.lineSeparator()).append(objectError.getDefaultMessage()));
+            throw new ResponseStatusException(HttpStatus.CONFLICT,stringBuilder.toString());
         }else {
-            userService.addUser(userRequest);
+            userService.registerUser(userRequest);
         }
 
     }

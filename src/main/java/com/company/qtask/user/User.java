@@ -14,7 +14,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String login;
+    private String email;
     private String firstName;
     private String password;
     private String status; /* active or deleted */
@@ -28,8 +28,8 @@ public class User {
     //constructors
 
 
-    public User(String login, String firstName, String password,String status, Role role) {
-        this.login = login;
+    public User(String email, String firstName, String password, String status, Role role) {
+        this.email = email;
         this.firstName = firstName;
         this.password = password;
         this.status = status;
@@ -44,7 +44,7 @@ public class User {
 
     public UserResponse toUserResponse (){
         RoleResponse roleResponse = new RoleResponse(this.role.getName());
-        return new UserResponse(this.id,this.login,this.firstName,this.status,roleResponse,this.tasks);
+        return new UserResponse(this.id,this.email,this.firstName,this.status,roleResponse,this.tasks);
     }
 
     //getters and setters
@@ -56,12 +56,12 @@ public class User {
         return id;
     }
 
-    public String getLogin() {
-        return login;
+    public String getEmail() {
+        return email;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public void setEmail(String login) {
+        this.email = login;
     }
 
     public Role getRole() {

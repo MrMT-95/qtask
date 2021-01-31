@@ -2,19 +2,16 @@ package com.company.qtask.user;
 
 import com.company.qtask.role.RoleResponse;
 import com.company.qtask.task.Task;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
-//@JsonInclude(JsonInclude.Include.NON_DEFAULT)
+@JsonInclude(JsonInclude.Include.NON_DEFAULT)
 public class UserResponse {
 
     //attributes
     private Integer id;
-    @NotNull
-    @Min(value = 3)
-    private String login;
+    private String email;
     private String firstName;
     private String status; // active or not active
     private RoleResponse role;
@@ -24,9 +21,9 @@ public class UserResponse {
     //user list response
 
 
-    public UserResponse(Integer id, String login, String firstName, String status, RoleResponse role, List<Task> tasks) {
+    public UserResponse(Integer id, String email, String firstName, String status, RoleResponse role, List<Task> tasks) {
         this.id = id;
-        this.login = login;
+        this.email = email;
         this.firstName = firstName;
         this.status = status;
         this.role = role;
@@ -35,9 +32,9 @@ public class UserResponse {
 
     // role list response
 
-    public UserResponse(Integer id, String login, String firstName, String status, List<Task> tasks){
+    public UserResponse(Integer id, String email, String firstName, String status, List<Task> tasks){
         this.id = id;
-        this.login = login;
+        this.email = email;
         this.firstName = firstName;
         this.status = status;
         this.tasks = tasks;
@@ -51,12 +48,12 @@ public class UserResponse {
         this.id = id;
     }
 
-    public String getLogin() {
-        return login;
+    public String getEmail() {
+        return email;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getFirstName() {

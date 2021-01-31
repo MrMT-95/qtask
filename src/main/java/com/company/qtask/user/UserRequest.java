@@ -3,6 +3,8 @@ package com.company.qtask.user;
 import com.company.qtask.role.Role;
 import com.company.qtask.task.Task;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -11,25 +13,30 @@ import java.util.List;
 public class UserRequest {
 
     @NotNull
+    @NotEmpty
     @Size(min = 3,max=20)
-    String login;
+    @Email(message = "Email is not valid!")
+    String email;
 
+    @NotNull
+    @NotEmpty
     String firstName;
 
     @NotNull
-    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,10}$")
+    @NotEmpty
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,10}$", message = "Password is not valid!")
     String password;
 
     String status = "active";
     Role role;
     List<Task> tasks;
 
-    public String getLogin() {
-        return login;
+    public String getEmail() {
+        return email;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getFirstName() {
