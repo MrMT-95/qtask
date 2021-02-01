@@ -32,28 +32,10 @@ public class Controller {
     }
 
 
-    @PostMapping(value = "/users", consumes = "application/json")
-    public void addUser(@Valid @RequestBody UserRequest userRequest,
-    BindingResult result){
-
-
-//        if (result.hasErrors()){
-//            StringBuilder stringBuilder = new StringBuilder("error : ");
-//            List<ObjectError> errorList = result.getAllErrors();
-//            errorList.forEach(objectError -> {
-//                stringBuilder.append(System.lineSeparator()).append(objectError.getDefaultMessage());
-//            });
-//            throw new ResponseStatusException(HttpStatus.CONFLICT,stringBuilder.toString());
-//        }else {
-//            userService.addUser(userRequest);
-//        }
-
-    }
-
     @PostMapping(value = "/user/register", consumes = "application/json")
     public void registerUser(@Valid @RequestBody UserRequest userRequest, BindingResult result){
         if (result.hasErrors()){
-            StringBuilder stringBuilder = new StringBuilder("error : ");
+            StringBuilder stringBuilder = new StringBuilder();
             List<ObjectError> errorList = result.getAllErrors();
             errorList.forEach(objectError -> stringBuilder.append(System.lineSeparator()).append(objectError.getDefaultMessage()));
             throw new ResponseStatusException(HttpStatus.CONFLICT,stringBuilder.toString());
