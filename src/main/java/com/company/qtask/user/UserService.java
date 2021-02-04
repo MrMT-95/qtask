@@ -7,4 +7,6 @@ public interface UserService {
     void registerUser(UserRequest userRequest);
 
     void deleteUser();
+
+    void loginUser(UserLogin userLogin);
 }

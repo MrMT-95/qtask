@@ -4,6 +4,7 @@ import com.company.qtask.role.Role;
 import com.company.qtask.role.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -16,14 +17,14 @@ public class UserServiceImpl implements UserService{
 
     UserRepository userRepository;
     RoleRepository roleRepository;
+    PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository) {
+    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
+        this.passwordEncoder = passwordEncoder;
     }
-
-
 
     @Override
     public Iterable<UserResponse> getUsers() {
@@ -36,16 +37,16 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public void registerUser(UserRequest userRequest) {
+
         String email = userRequest.getEmail();
         String firstName = userRequest.getFirstName();
-        String password = userRequest.getPassword();
         Role role = userRequest.getRole();
 
         //check if provided name exist and not blank
         Optional<User> userOptional = userRepository.findUserByEmail(email);
-//        Optional.ofNullable(email).orElseThrow(()->{
-//            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"E-mail should not be blank");
-//        });
+        Optional.ofNullable(email).orElseThrow(()->{
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"E-mail should not be blank");
+        });
         userOptional.ifPresent(user -> {
             throw new ResponseStatusException(HttpStatus.CONFLICT,"Given user already exists!");
         });
@@ -63,17 +64,39 @@ public class UserServiceImpl implements UserService{
             });
         }
 
+        //encoding password
+        String encodedPassword = passwordEncoder.encode(userRequest.getPassword());
 
         //create user
-        User user = new User(email,firstName,password, userRequest.getStatus(), role);
+        User user = new User(email,firstName,encodedPassword, userRequest.getStatus(), role);
         userRepository.save(user);
-        throw new ResponseStatusException(HttpStatus.OK,"User added successfully");
-
+        throw new ResponseStatusException(HttpStatus.OK,"User registered successfully");
 
     }
 
     @Override
     public void deleteUser() {
+
+    }
+
+    @Override
+    public void loginUser(UserLogin userLogin) {
+
+        Optional<User> userOptional = userRepository.findUserByEmail(userLogin.getEmail());
+        userOptional.orElseThrow(()->{
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Given \"email\" does not exist!");
+        });
+
+        userOptional.ifPresent(user -> {
+
+            if (passwordEncoder.matches(userLogin.getPassword(),user.getPassword())){
+                throw new ResponseStatusException(HttpStatus.OK,"User logged successfully!");
+            }else {
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,"Password does not match");
+            }
+        });
+
+
 
     }
 }

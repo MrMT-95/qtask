@@ -3,6 +3,7 @@ package com.company.qtask.controllers;
 import com.company.qtask.role.Role;
 import com.company.qtask.role.RoleRequest;
 import com.company.qtask.role.RoleService;
+import com.company.qtask.user.UserLogin;
 import com.company.qtask.user.UserRequest;
 import com.company.qtask.user.UserResponse;
 import com.company.qtask.user.UserService;
@@ -43,6 +44,18 @@ public class Controller {
             userService.registerUser(userRequest);
         }
 
+    }
+
+    @GetMapping(value = "/user/login", consumes = "application/json")
+    public void loginUser(@Valid @RequestBody UserLogin userLogin, BindingResult result){
+        if (result.hasErrors()){
+            StringBuilder stringBuilder = new StringBuilder();
+            List<ObjectError> errorList = result.getAllErrors();
+            errorList.forEach(objectError -> stringBuilder.append(System.lineSeparator()).append(objectError.getDefaultMessage()));
+            throw new ResponseStatusException(HttpStatus.CONFLICT,stringBuilder.toString());
+        }else {
+            userService.loginUser(userLogin);
+        }
     }
 
     @GetMapping("/users")
