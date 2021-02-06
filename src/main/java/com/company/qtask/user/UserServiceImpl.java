@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
     UserRepository userRepository;
     RoleRepository roleRepository;
@@ -44,23 +44,23 @@ public class UserServiceImpl implements UserService{
 
         //check if provided name exist and not blank
         Optional<User> userOptional = userRepository.findUserByEmail(email);
-        Optional.ofNullable(email).orElseThrow(()->{
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"E-mail should not be blank");
+        Optional.ofNullable(email).orElseThrow(() -> {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "E-mail should not be blank");
         });
         userOptional.ifPresent(user -> {
-            throw new ResponseStatusException(HttpStatus.CONFLICT,"Given user already exists!");
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Given user already exists!");
         });
 
         //check if role is provided if not, user(role) should be set here
         //check if provided role exist
-        if(Optional.ofNullable(role).isEmpty()){
-            role = roleRepository.findRoleByName("user").orElseThrow(()->{
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Role \"User\" does not exist!");
+        if (Optional.ofNullable(role).isEmpty()) {
+            role = roleRepository.findRoleByName("user").orElseThrow(() -> {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Role \"User\" does not exist!");
             });
-        }else{
+        } else {
             Optional<Role> roleOptional = roleRepository.findRoleByName(role.getName());
-            role = roleOptional.orElseThrow(()->{
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Given role does not exist!");
+            role = roleOptional.orElseThrow(() -> {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Given role does not exist!");
             });
         }
 
@@ -68,9 +68,9 @@ public class UserServiceImpl implements UserService{
         String encodedPassword = passwordEncoder.encode(userRequest.getPassword());
 
         //create user
-        User user = new User(email,firstName,encodedPassword, userRequest.getStatus(), role);
+        User user = new User(email, firstName, encodedPassword, userRequest.getStatus(), role);
         userRepository.save(user);
-        throw new ResponseStatusException(HttpStatus.OK,"User registered successfully");
+        throw new ResponseStatusException(HttpStatus.OK, "User registered successfully");
 
     }
 
@@ -83,20 +83,15 @@ public class UserServiceImpl implements UserService{
     public void loginUser(UserLogin userLogin) {
 
         Optional<User> userOptional = userRepository.findUserByEmail(userLogin.getEmail());
-        userOptional.orElseThrow(()->{
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Given \"email\" does not exist!");
+
+        User user = userOptional.orElseGet(() -> {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Incorrect username or password!");
         });
 
-        userOptional.ifPresent(user -> {
-
-            if (passwordEncoder.matches(userLogin.getPassword(),user.getPassword())){
-                throw new ResponseStatusException(HttpStatus.OK,"User logged successfully!");
-            }else {
-                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,"Password does not match");
-            }
-        });
-
-
-
+        if (passwordEncoder.matches(userLogin.getPassword(), user.getPassword())) {
+            throw new ResponseStatusException(HttpStatus.OK, "User logged successfully!");
+        } else {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Incorrect username or password!");
+        }
     }
 }
