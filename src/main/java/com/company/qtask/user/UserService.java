@@ -6,7 +6,7 @@ public interface UserService {
 
     void registerUser(UserRequest userRequest);
 
-    void deleteUser();
+    void deleteUser(String email);
 
     void loginUser(UserLogin userLogin);
 }
