@@ -1,8 +1,9 @@
 package com.company.qtask.controllers;
 
-import com.company.qtask.role.Role;
 import com.company.qtask.role.RoleRequest;
+import com.company.qtask.role.RoleResponse;
 import com.company.qtask.role.RoleService;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,7 +23,12 @@ public class RoleController {
     }
 
     @GetMapping("/roles")
-    public Iterable<Role> getRoles(){
+    public Iterable<RoleResponse> getRoles(){
         return roleService.getRoles();
+    }
+
+    @DeleteMapping("/roles")
+    public void deleteRole(String name){
+
     }
 }

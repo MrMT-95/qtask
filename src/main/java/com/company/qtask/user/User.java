@@ -47,6 +47,11 @@ public class User {
         return new UserResponse(this.id,this.email,this.firstName,this.status,roleResponse,this.tasks);
     }
 
+
+    public UserResponse toUserResponseForRole (){
+        return new UserResponse(this.id,this.email,this.firstName,this.status,this.tasks);
+    }
+
     //getters and setters
     public void setId(Integer id) {
         this.id = id;

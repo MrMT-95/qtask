@@ -1,9 +1,11 @@
 package com.company.qtask.role;
 
 import com.company.qtask.user.User;
+import com.company.qtask.user.UserResponse;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 public class Role {
@@ -26,7 +28,15 @@ public class Role {
     public Role() {
 
     }
+    // methods
 
+    public RoleResponse toRoleResponse() {
+        List<UserResponse> usersResponse = this.users.stream()
+                .map(User::toUserResponseForRole)
+                .collect(Collectors.toList());
+
+        return new RoleResponse(this.id, this.name, usersResponse);
+    }
 
     //getters and setters
 
