@@ -32,7 +32,6 @@ public class UserServiceImpl implements UserService {
         return userRepository.findAll().stream()
                 .map(User::toUserResponse)
                 .collect(Collectors.toList());
-
     }
 
     @Override
@@ -77,12 +76,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUser(String email) {
 
-        userRepository.delete(userRepository.findUserByEmail(email).orElseThrow(()->{
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Given user does not exist!");
+        userRepository.delete(userRepository.findUserByEmail(email).orElseThrow(() -> {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Given user does not exist!");
         }));
 
         throw new ResponseStatusException(HttpStatus.OK, "User deleted successfully");
-
     }
 
     @Override
@@ -99,5 +97,29 @@ public class UserServiceImpl implements UserService {
         } else {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Incorrect username or password!");
         }
+    }
+
+    @Override
+    public void updateUser(UserUpdate userUpdate) {
+        String updateName = userUpdate.getFirstName();
+        String updatePassword = userUpdate.getPassword();
+
+        Optional<User> userOptional = userRepository.findUserByEmail(userUpdate.getEmail());
+
+        userOptional.ifPresent(user -> {
+
+            if (Optional.ofNullable(updateName).isPresent() && !user.getFirstName().equals(updateName)) {
+                user.setFirstName(updateName);
+            }
+
+            if (Optional.ofNullable(updatePassword).isPresent() && !passwordEncoder.matches(updatePassword, user.getPassword())) {
+                user.setPassword(passwordEncoder.encode(updatePassword));
+            }
+
+            userRepository.save(user);
+            throw new ResponseStatusException(HttpStatus.OK, "User information updated!");
+        });
+
+
     }
 }

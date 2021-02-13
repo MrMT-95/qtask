@@ -14,12 +14,13 @@ public class UserRequest {
 
     @NotNull
     @NotEmpty
-    @Size(min = 3,max=20)
+    @Size(min = 3, max = 20)
     @Email(message = "Email is not valid!")
     String email;
 
     @NotNull
     @NotEmpty
+    @Size(max = 25)
     String firstName;
 
     @NotNull

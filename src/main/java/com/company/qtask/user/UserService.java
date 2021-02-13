@@ -9,4 +9,6 @@ public interface UserService {
     void deleteUser(String email);
 
     void loginUser(UserLogin userLogin);
+
+    void updateUser(UserUpdate userUpdate);
 }

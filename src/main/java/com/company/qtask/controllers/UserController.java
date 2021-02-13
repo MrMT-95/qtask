@@ -1,9 +1,6 @@
 package com.company.qtask.controllers;
 
-import com.company.qtask.user.UserLogin;
-import com.company.qtask.user.UserRequest;
-import com.company.qtask.user.UserResponse;
-import com.company.qtask.user.UserService;
+import com.company.qtask.user.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
@@ -22,8 +19,10 @@ public class UserController {
         this.userService = userService;
     }
 
+
     @PostMapping(value = "/user/register", consumes = "application/json")
     public void registerUser(@Valid @RequestBody UserRequest userRequest, BindingResult result) {
+
         if (result.hasErrors()) {
             StringBuilder stringBuilder = new StringBuilder();
             List<ObjectError> errorList = result.getAllErrors();
@@ -37,6 +36,7 @@ public class UserController {
 
     @GetMapping(value = "/user/login", consumes = "application/json")
     public void loginUser(@Valid @RequestBody UserLogin userLogin, BindingResult result) {
+
         if (result.hasErrors()) {
             StringBuilder stringBuilder = new StringBuilder();
             List<ObjectError> errorList = result.getAllErrors();
@@ -47,13 +47,29 @@ public class UserController {
         }
     }
 
+
     @GetMapping("/users")
     public Iterable<UserResponse> getUsers() {
         return userService.getUsers();
     }
 
+
     @DeleteMapping("/users")
     public void deleteUser(String email) {
         userService.deleteUser(email);
+    }
+
+    @PatchMapping(value = "/users", consumes = "application/json")
+    public void updateUser(@Valid @RequestBody UserUpdate userUpdate, BindingResult result){
+
+        if (result.hasErrors()){
+            StringBuilder stringBuilder = new StringBuilder();
+            List<ObjectError> errorList = result.getAllErrors();
+            errorList.forEach(objectError -> stringBuilder.append(System.lineSeparator()).append(objectError.getDefaultMessage()));
+            throw new ResponseStatusException(HttpStatus.CONFLICT, stringBuilder.toString());
+        }else {
+
+            userService.updateUser(userUpdate);
+        }
     }
 }
