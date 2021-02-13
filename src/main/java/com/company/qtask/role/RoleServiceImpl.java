@@ -9,7 +9,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.stream.Collectors;
 
 @Service
-public class RoleServiceImpl implements RoleService{
+public class RoleServiceImpl implements RoleService {
 
     RoleRepository roleRepository;
     UserRepository userRepository;
@@ -22,9 +22,12 @@ public class RoleServiceImpl implements RoleService{
     @Override
     public void addRole(RoleRequest roleRequest) {
         String name = roleRequest.getName();
+        roleRepository.findRoleByName(name).ifPresent(role -> {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Given role already exist!");
+        });
         Role role = new Role(name);
         roleRepository.save(role);
-        throw new ResponseStatusException(HttpStatus.OK,"Role added successfully");
+        throw new ResponseStatusException(HttpStatus.OK, "Role added successfully");
     }
 
     @Override
@@ -41,8 +44,8 @@ public class RoleServiceImpl implements RoleService{
 
     @Override
     public void deleteRole(RoleRequest roleRequest) {
-        roleRepository.delete(roleRepository.findRoleByName(roleRequest.getName()).orElseThrow(()->{
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Given role does not exist!");
+        roleRepository.delete(roleRepository.findRoleByName(roleRequest.getName()).orElseThrow(() -> {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Given role does not exist!");
         }));
         throw new ResponseStatusException(HttpStatus.OK, "Role deleted successfully");
     }
